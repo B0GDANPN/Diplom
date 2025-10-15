@@ -1,0 +1,64 @@
+% --- ЯЗЫК И ШРИФТЫ (XeLaTeX) ---
+\usepackage{fontspec}                    % вместо inputenc/fontenc
+\defaultfontfeatures{Ligatures=TeX}
+% Рекомендуемые открытые шрифты с кириллицей:
+\setmainfont{CMU Serif}                  % пакет fonts-cmu
+\setsansfont{CMU Sans Serif}
+\setmonofont{CMU Typewriter Text}
+
+\usepackage{polyglossia}                 % вместо babel
+\setdefaultlanguage{russian}
+
+% microtype в XeLaTeX: expansion не работает — отключаем
+\usepackage[protrusion=true,expansion=false]{microtype}
+
+% --- ВЕРСТКА И ГРАФИКА ---
+\usepackage{pdfpages}
+\usepackage[a4paper, left=30mm, right=15mm, top=20mm, bottom=20mm]{geometry}
+
+\usepackage{array}
+\usepackage{calc}
+
+\usepackage{csquotes}
+\renewcommand{\familydefault}{\sfdefault} % как у тебя: sans-serif по умолчанию
+\usepackage{tikz}
+\usetikzlibrary{trees, positioning}
+
+% --- МАТЕМАТИКА ---
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+
+% --- АЛГОРИТМЫ ---
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+% --- КОД/ЛИСТИНГИ ---
+\usepackage{xcolor}
+\usepackage{listings}
+\lstset{
+    language=C,
+    basicstyle=\ttfamily,                 % возьмётся из \setmonofont
+    keywordstyle=\bfseries\color{blue},
+    commentstyle=\itshape\color{gray},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    breaklines=true,
+    breakatwhitespace=false,
+    frame=single,
+    keepspaces=true,
+    tabsize=2
+}
+
+% --- ВНЕШНИЕ СОЕДИНЕНИЯ (символы) ---
+\def\ojoin{\setbox0=\hbox{$\bowtie$} \rule[-.02ex]{.25em}{.4pt}\llap{\rule[\ht0]{.25em}{.4pt}}}
+\def\leftouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie}}
+\def\rightouterjoin{\mathbin{\bowtie\mkern-5.8mu\ojoin}}
+\def\fullouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie\mkern-5.8mu\ojoin}}
+
+% --- ССЫЛКИ/ГРАФИКА ---
+\usepackage{hyperref}
+\usepackage{graphicx}
