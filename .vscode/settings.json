@@ -1,51 +1,30 @@
+// .vscode/settings.json
 {
-  // Автосборка при сохранении файла
+  // Требуется расширение "LaTeX Workshop"
   "latex-workshop.latex.autoBuild.run": "onSave",
+  "latex-workshop.latex.recipe.default": "latexmk (lualatex, build->publish)",
 
-  // Встроенный просмотр PDF во вкладке VS Code (удобно с SyncTeX)
-  "latex-workshop.view.pdf.viewer": "tab",
-
-  // РЕЦЕПТ: сначала чистка, потом сборка latexmk с XeLaTeX
-  "latex-workshop.latex.recipe.default": "Clean & XeLaTeX (latexmk)",
-  "latex-workshop.latex.recipes": [
-    {
-      "name": "Clean & XeLaTeX (latexmk)",
-      "tools": [
-        "latexmk-clean",
-        "latexmk-xelatex"
-      ]
-    },
-    {
-      "name": "XeLaTeX + BibTeX (latexmk)",
-      "tools": [
-        "latexmk-xelatex",
-        "bibtex",
-        "latexmk-xelatex",
-        "latexmk-xelatex"
-      ]
-    }
-  ],
   "latex-workshop.latex.tools": [
     {
-      "name": "latexmk-clean",
-      "command": "latexmk",
-      "args": ["-C", "%DOC%"]
-    },
-    {
-      "name": "latexmk-xelatex",
+      "name": "latexmk (lualatex, build->publish)",
       "command": "latexmk",
       "args": [
-        "-xelatex",             // использовать XeLaTeX
-        "-synctex=1",
-        "-interaction=nonstopmode",
-        "-file-line-error",
-        "%DOC%"
-      ]
-    },
+        "-pdf",
+        "-auxdir=build",
+        "-outdir=publish",
+        "-lualatex",
+        "main.tex"
+      ],
+      "env": {}
+    }
+  ],
+
+  "latex-workshop.latex.recipes": [
     {
-      "name": "bibtex",
-      "command": "bibtex",
-      "args": ["%DOCFILE%"]
+      "name": "latexmk (lualatex, build->publish)",
+      "tools": [
+        "latexmk (lualatex, build->publish)"
+      ]
     }
   ]
 }
