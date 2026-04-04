@@ -1,64 +1,371 @@
-% --- ЯЗЫК И ШРИФТЫ (XeLaTeX) ---
-\usepackage{fontspec}                    % вместо inputenc/fontenc
-\defaultfontfeatures{Ligatures=TeX}
-% Рекомендуемые открытые шрифты с кириллицей:
-\setmainfont{CMU Serif}                  % пакет fonts-cmu
-\setsansfont{CMU Sans Serif}
-\setmonofont{CMU Typewriter Text}
-
-\usepackage{polyglossia}                 % вместо babel
-\setdefaultlanguage{russian}
-
-% microtype в XeLaTeX: expansion не работает — отключаем
-\usepackage[protrusion=true,expansion=false]{microtype}
-
-% --- ВЕРСТКА И ГРАФИКА ---
-\usepackage{pdfpages}
-\usepackage[a4paper, left=30mm, right=15mm, top=20mm, bottom=20mm]{geometry}
-
-\usepackage{array}
-\usepackage{calc}
-
-\usepackage{csquotes}
-\renewcommand{\familydefault}{\sfdefault} % как у тебя: sans-serif по умолчанию
-\usepackage{tikz}
-\usetikzlibrary{trees, positioning}
-
-% --- МАТЕМАТИКА ---
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{mathtools}
-\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
-
-% --- АЛГОРИТМЫ ---
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-
-% --- КОД/ЛИСТИНГИ ---
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  14pt,
+  a4paper,
+]{extarticle}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{Times New Roman}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{XITS Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
 \usepackage{xcolor}
+\usepackage[left=3cm,right=2cm,top=3cm,bottom=2cm]{geometry}
 \usepackage{listings}
-\lstset{
-    language=C,
-    basicstyle=\ttfamily,                 % возьмётся из \setmonofont
-    keywordstyle=\bfseries\color{blue},
-    commentstyle=\itshape\color{gray},
-    stringstyle=\color{red},
-    numbers=left,
-    numberstyle=\tiny,
-    stepnumber=1,
-    breaklines=true,
-    breakatwhitespace=false,
-    frame=single,
-    keepspaces=true,
-    tabsize=2
+\newcommand{\passthrough}[1]{#1}
+\lstset{defaultdialect=[5.3]Lua}
+\lstset{defaultdialect=[x86masm]Assembler}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+\usepackage[style=gost-r-7-0-5-2008-numeric]{citation-style-language}
+\addbibresource{common/citations.bib}
+\ifLuaTeX
+\usepackage[bidi=basic]{babel}
+\else
+\usepackage[bidi=default]{babel}
+\fi
+\babelprovide[main,import]{russian}
+\ifPDFTeX
+\else
+\babelfont{rm}[]{Times New Roman}
+\fi
+% get rid of language-specific shorthands (see #6817):
+\let\LanguageShortHands\languageshorthands
+\def\languageshorthands#1{}
+
+%%%%%%%%%%%%%%%%%%%
+%% Formatting for GOST
+%%%%%%%%%%%%%%%%%%%
+
+%% Notes in pdf
+\usepackage{pdfcomment}
+
+%% Support for \mathbb and \mathcal
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
+\let\mathbb\relax % remove the definition by unicode-math
+\DeclareMathAlphabet{\mathbb}{U}{msb}{m}{n}
+
+%% Page numbering
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+%\fancyhead[C]{\thepage}
+\cfoot{\thepage}
+
+%% Enable catenation of pdfs (e.g. prpending title.pdf to rest of the text)
+\usepackage{pdfpages}
+
+%% Start page numbering from 2, due to title being the first one
+%% Uncomment if title pdf is not prepended in include-before clause in yaml
+%\setcounter{page}{2}
+
+%% Double spaces
+\usepackage{setspace}
+\doublespacing
+%\onehalfspacing
+
+%% Indents
+\usepackage{indentfirst}
+
+%% Center headings
+\usepackage[center]{titlesec}
+\titlelabel{\thetitle.\quad}
+
+%% Magic option for dots in labels
+\usepackage[dotinlabels]{titletoc}
+
+\usepackage[center,font=singlespacing]{caption}
+
+%% Proper names
+\renewcommand{\lstlistingname}{Листинг}
+
+%% Within-section numbering
+\numberwithin{table}{section}
+\numberwithin{figure}{section}
+\numberwithin{equation}{section}
+%\usepackage{chngcntr}
+%\renewcommand{\counterwithin}{\@ifstar{\@csinstar}{\@csin}}
+\AtBeginDocument{\numberwithin{lstlisting}{section}}
+
+%% Cyrillic numbering of subfigures
+\usepackage{subfig}
+\makeatletter
+\def\cyralph#1{\expandafter\@cyralph\csname c@#1\endcsname}
+\def\@cyralph#1{\ifcase #1\or а\or б\or в\or г\or д\or е\or ж\or з\or и\or к\or л\or м\or н\or о\or п\or р\or с\or т\or у\or ф\or х\or ц\or ч\or ш\or щ\or э\or ю\or я\else \@ctrerr \fi}
+\renewcommand{\thesubfigure}{\cyralph{subfigure}}
+\makeatother
+
+%% Theorem and other stuff
+\newcounter{stmt}
+\numberwithin{stmt}{section}
+
+%% Hyphenation rules
+\AtBeginDocument{\selectlanguage{russian}\hyphenation{также су-пер-класс су-пер-ин-тер-фейс}}
+
+\usepackage{lscape}
+
+%% Define \ceil*{} -- https://tex.stackexchange.com/questions/42271/floor-and-ceiling-functions/42274
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+
+%%%%
+%% Threorm, algorithm and other stuff
+%%%%
+
+\usepackage{amsthm}
+
+\newtheorem{algorithmbase}{Алгоритм}[section]
+\newtheorem{definition}{Определение}[section]
+\newtheorem{theorem}{Теорема}[section]
+\newtheorem{lemma}[theorem]{Лемма}
+\newtheorem{statement}[theorem]{Утверждение}
+\newtheorem{corollary}[theorem]{Следствие}
+
+%% Fix spacing between nested items and outer ones
+\usepackage{enumitem}
+\setlist[enumerate]{topsep=\parskip,itemsep=\parskip}
+\setlist[itemize]{topsep=\parskip,itemsep=\parskip}
+
+%\AtBeginDocument{
+%    \abovedisplayskip=2\parskip
+%    \belowdisplayskip=2\parskip
+%    \abovedisplayshortskip=2\parskip
+%    \belowdisplayshortskip=2\parskip
+%}
+
+\newenvironment{algorithm}[1]{
+    \begin{algorithmbase}\label{#1}
+    %% nested enumerate -- https://stackoverflow.com/a/24650181
+    \renewcommand{\labelenumi}{\arabic{enumi}.} 
+    \renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+    \renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumii}}
+} {
+    \qed
+    \end{algorithmbase}
 }
 
-% --- ВНЕШНИЕ СОЕДИНЕНИЯ (символы) ---
-\def\ojoin{\setbox0=\hbox{$\bowtie$} \rule[-.02ex]{.25em}{.4pt}\llap{\rule[\ht0]{.25em}{.4pt}}}
-\def\leftouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie}}
-\def\rightouterjoin{\mathbin{\bowtie\mkern-5.8mu\ojoin}}
-\def\fullouterjoin{\mathbin{\ojoin\mkern-5.8mu\bowtie\mkern-5.8mu\ojoin}}
+%%%%%%%%%%%
 
-% --- ССЫЛКИ/ГРАФИКА ---
-\usepackage{hyperref}
-\usepackage{graphicx}
+%%%%%%%%%%%%%%%%%%%
+%% Listings
+%%%%%%%%%%%%%%%%%%%
+
+%\usepackage{xcolor}   % for \textcolor
+
+%% Fix for "Missing number, treated as zero spaces"
+%% when using consecutive spaces
+\newsavebox\grayarrow
+\sbox\grayarrow{\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookrightarrow\space}}}
+
+\lstdefinestyle{default}{
+    basicstyle   = {\linespread{1}\ttfamily},
+    %% Uncomment to move caption below listing
+    %captionpos   = b,
+    breaklines   = true,
+    numbersep    = 5pt,
+    escapeinside = {\$\$},
+    columns      = space-flexible,
+    postbreak    = \usebox\grayarrow,
+    showstringspaces = false,
+    texcl        = true,
+    %% Examples of custom keyword highlighting
+    %emph         = [1]{ordered,by,break,dom,call},
+    %emphstyle    = [1]{\bfseries},
+    %emph         = [2]{super,final,protected,private,package},
+    %emphstyle    = [2]{},
+    %emph         = [3]{find,resolve},
+    %emphstyle    = [3]{\itshape},
+}
+
+\lstset{style=default}
+
+%%%%%%%
+%% Allow skipping line numbers -- https://tex.stackexchange.com/a/215752
+\let\origthelstnumber\thelstnumber
+\makeatletter
+\newcommand*\Suppressnumber{%
+  \lst@AddToHook{OnNewLine}{%
+    \let\thelstnumber\relax%
+     \advance\c@lstnumber-\@ne\relax%
+    }%
+}
+
+\newcommand*\Reactivatenumber[1]{%
+  \lst@AddToHook{OnNewLine}{%
+   \let\thelstnumber\origthelstnumber%
+   %\setcounter{lstnumber}{\numexpr#1-1\relax}%
+   \advance\c@lstnumber\@ne\relax%
+  }%
+}
+
+\makeatother
+%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%
+%% Other
+%%%%%%%%%%%%%%%%%%%
+
+%% Workaround for pandoc-crossref issue - https://github.com/lierdakil/pandoc-crossref/issues/326
+\makeatletter
+\@ifpackageloaded{subfig}{}{\usepackage{subfig}}
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\captionsetup[subfloat]{margin=0.5em}
+\makeatother
+
+\usepackage{mdframed}
+
+%% Provides BVerbatim environment which boxes verbatim
+%% so it can be centered -- https://tex.stackexchange.com/a/122197
+\usepackage{fancyvrb}
+
+%% Set numbered footnotes in minipages
+\renewcommand{\thempfootnote}{\arabic{mpfootnote}}
+
+%% Do not number tables
+%\captionsetup[table]{labelformat=empty}
+
+%% Enable strikethrough syntax \st of newer pandoc
+\usepackage{soul}
+
+\usepackage{csquotes}
+
+%% Normal subscripts in listings using \textsubscript{i} -- https://tex.stackexchange.com/questions/63845/boldface-and-subscripts-in-verbatim-mode    
+\usepackage{fixltx2e}
+
+%% Hack for using latex envs inside markdown -- https://github.com/jgm/pandoc/issues/3145#issuecomment-302787889
+\newcommand{\hideFromPandoc}[1]{#1}
+\hideFromPandoc{
+  \let\Begin\begin
+  \let\End\end
+}
+
+%% TODO command
+\newcommand\todo[1]{\textcolor{red}{#1}}
+
+%%%%%%%%%%%%%%%%%%%
+%% Tikz stuff
+%%%%%%%%%%%%%%%%%%%
+
+\usepackage{tikz}
+\usetikzlibrary{tikzmark,shapes,matrix,calc,positioning,fit,graphs,arrows.meta,backgrounds,decorations.pathreplacing}
+
+\usetikzmarklibrary{listings}
+
+\tikzset{>=latex}
+
+%% Align text vertically with subscript
+%\tikzset{text depth=.25ex}
+%% Align text vertically without subscript
+\tikzset{text depth=0}
+
+
+%% Scope prefix support -- https://tex.stackexchange.com/a/128079
+\makeatletter
+\tikzset{%
+  prefix/.code={%
+    \tikzset{%
+      name/.code={\edef\tikz@fig@name{#1 ##1}}
+    }%
+  }%
+}
+\makeatother
+
+%% Tikz figure
+\newenvironment{tikzfigure}[3]{
+    \def\figlabel{#1}
+    \def\figcaption{#2}
+
+    \begin{figure}
+    \centering
+    \begin{tikzpicture}[#3]
+} {
+    \end{tikzpicture}
+    \caption{\figcaption}
+    \label{\figlabel}
+    \end{figure}
+}
+\newcommand{\tikzsubfloat}[3]{
+    \subfloat[#2]{
+    \begin{tikzpicture}[baseline=(current bounding box.north)]
+    #3
+    \end{tikzpicture}
+    \label{#1}
+    }
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%
+%% pgfplots stuff
+%%%%%%%%%%%%%%%%%%%
+
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+\definecolor{googleblue}{HTML}{4285F4}
+\definecolor{googlered}{HTML}{EA4335}
+\definecolor{googleyellow}{HTML}{FBBC04}
+\definecolor{googlegreen}{HTML}{34A753}
+\definecolor{googleorange}{HTML}{FE6D00}
+
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdflang={ru-RU},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
