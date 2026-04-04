@@ -1,12 +1,20 @@
 \input{preamble.tex}
 \begin{document}
+
 \includepdf[pages={1}]{title.pdf}
 
 \input{annotation.tex}
+\newpage
+
+\tableofcontents
+\newpage
+
 \input{intro.tex}
 \input{formal_statement.tex}
 \input{related.tex}
 \input{research.tex}
-\centering \bibliographystyle{alpha}
-\bibliography{citations.bib}
+
+% Список литературы
+\printbibliography
+
 \end{document}

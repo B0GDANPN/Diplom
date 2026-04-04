@@ -64,7 +64,7 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \setcounter{secnumdepth}{5}
 \usepackage[style=gost-r-7-0-5-2008-numeric]{citation-style-language}
-\addbibresource{common/citations.bib}
+\addbibresource{citations.bib}
 \ifLuaTeX
 \usepackage[bidi=basic]{babel}
 \else
@@ -180,16 +180,21 @@
 %    \belowdisplayshortskip=2\parskip
 %}
 
-\newenvironment{algorithm}[1]{
-    \begin{algorithmbase}\label{#1}
-    %% nested enumerate -- https://stackoverflow.com/a/24650181
-    \renewcommand{\labelenumi}{\arabic{enumi}.} 
-    \renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
-    \renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumii}}
-} {
-    \qed
-    \end{algorithmbase}
-}
+%% Standard algorithm float + pseudocode (used in related.tex)
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+%% Custom algorithm environment from liontiger23 template (disabled —
+%% conflicts with the float-based \begin{algorithm}[H] used in content files).
+%\newenvironment{algorithm}[1]{
+%    \begin{algorithmbase}\label{#1}
+%    \renewcommand{\labelenumi}{\arabic{enumi}.} 
+%    \renewcommand{\labelenumii}{\arabic{enumi}.\arabic{enumii}}
+%    \renewcommand{\labelenumiii}{\arabic{enumi}.\arabic{enumii}.\arabic{enumii}}
+%} {
+%    \qed
+%    \end{algorithmbase}
+%}
 
 %%%%%%%%%%%
 
@@ -278,7 +283,8 @@
 \usepackage{csquotes}
 
 %% Normal subscripts in listings using \textsubscript{i} -- https://tex.stackexchange.com/questions/63845/boldface-and-subscripts-in-verbatim-mode    
-\usepackage{fixltx2e}
+%% fixltx2e is obsolete since LaTeX 2015 — its fixes are now in the kernel
+%\usepackage{fixltx2e}
 
 %% Hack for using latex envs inside markdown -- https://github.com/jgm/pandoc/issues/3145#issuecomment-302787889
 \newcommand{\hideFromPandoc}[1]{#1}
@@ -348,6 +354,7 @@
 %%%%%%%%%%%%%%%%%%%
 
 \usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
 \usepackage{pgfplotstable}
 
 \definecolor{googleblue}{HTML}{4285F4}

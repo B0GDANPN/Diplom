@@ -1,2 +1,2 @@
 rm -rf build
-latexmk -pdf -auxdir=build -outdir=publish  -lualatex main.tex
+latexmk -lualatex -pdf -auxdir=build -outdir=publish  -lualatex main.tex
