@@ -15,9 +15,9 @@ $G = (\mathcal{R},\, \mathcal{E})$, где ребро $(R_i, R_j) \in \mathcal{E
 
 \textbf{Алгоритм планирования.}
 Алгоритм планирования~--- это отображение
-$\mathcal{A}\colon (\mathcal{R},\, \mathcal{P},\, \Sigma) \to \mathcal{T}_n$,
+$\mathcal{A}\colon (\mathcal{R},\, \mathcal{P},\, \Sigma,\ \mathcal(D)) \to \mathcal{T}_n$,
 где $\Sigma$~--- множество доступных статистик (гистограммы, список самых частых значений,
-оценки уникальных значений для каждого столбца).
+оценки уникальных значений для каждого столбца), $\mathcal(D)$ ~--- данные.
 Результат $T_{\mathcal{A}} = \mathcal{A}(\mathcal{R}, \mathcal{P}, \Sigma) \in \mathcal{T}_n$~---
 план исполнения.
 Работа алгоритма $\mathcal{A}$ характеризуется двумя величинами:
