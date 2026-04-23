@@ -31,7 +31,7 @@
   \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
 \usepackage{xcolor}
-\usepackage[left=3cm,right=2cm,top=3cm,bottom=2cm]{geometry}
+\usepackage[left=3cm,right=1.5cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{listings}
 \newcommand{\passthrough}[1]{#1}
 \lstset{defaultdialect=[5.3]Lua}
@@ -113,9 +113,11 @@
 
 %% Indents
 \usepackage{indentfirst}
+\setlength{\parindent}{1.27cm}
 
 %% Center headings
 \usepackage[center]{titlesec}
+\newcommand{\sectionbreak}{\clearpage}   % добавить
 \titlelabel{\thetitle.\quad}
 
 %% Magic option for dots in labels
