@@ -17,6 +17,9 @@
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
+%% Define \ceil*{} -- https://tex.stackexchange.com/questions/42271/floor-and-ceiling-functions/42274
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \usepackage{lmodern}
 \ifPDFTeX\else
   % xetex/luatex font selection
@@ -153,9 +156,6 @@
 
 \usepackage{lscape}
 
-%% Define \ceil*{} -- https://tex.stackexchange.com/questions/42271/floor-and-ceiling-functions/42274
-\usepackage{mathtools}
-\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 
 %%%%
 %% Threorm, algorithm and other stuff
@@ -218,7 +218,7 @@
     breaklines   = true,
     numbersep    = 5pt,
     escapeinside = {\$\$},
-    columns      = space-flexible,
+    columns      = flexible,
     postbreak    = \usebox\grayarrow,
     showstringspaces = false,
     texcl        = true,
