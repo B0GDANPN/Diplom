@@ -13,7 +13,7 @@ $G = (\mathcal{R},\, \mathcal{E})$, где ребро $(R_i, R_j) \in \mathcal{E
 всех допустимых планов для данного запроса.
 \par
 
-\textbf{Алгоритм планирования.}
+\textbf{Алгоритм планирования}
 Алгоритм планирования~--- это отображение
 $\mathcal{A}\colon (\mathcal{R},\, \mathcal{P},\, \Sigma,\ \mathcal(D)) \to \mathcal{T}_n$,
 где $\Sigma$~--- множество доступных статистик (гистограммы, список самых частых значений,
@@ -33,7 +33,7 @@ $\mathcal{A}\colon (\mathcal{R},\, \mathcal{P},\, \Sigma,\ \mathcal(D)) \to \mat
 быстрые эвристики сокращают $t_{\mathrm{plan}}$, но могут увеличить $t_{\mathrm{exec}}$.
 \par
 
-\textbf{Целевая функция.}
+\textbf{Целевая функция}
 Суммарное время обработки запроса:
 \[
     t_{\mathrm{total}}(\mathcal{A}) \;=\; t_{\mathrm{plan}}(\mathcal{A}) \;+\; t_{\mathrm{exec}}(\mathcal{A}) \;\longrightarrow\; \min_{\mathcal{A}}.
